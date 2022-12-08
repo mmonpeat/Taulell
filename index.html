@@ -19,8 +19,9 @@
     li div {
         display: inline-block;
     }
+   
 </style>
-<body>
+<body id="body">
     <div id="taula">
         <ul>
             <li id="item-1"></li>
@@ -45,7 +46,7 @@
             <li id="item-20"></li>
         </ul>
     </div>
-    
+        <label> Seleciona el nombre de jugadors: </label>
         <select id="select" name="numjug" onchange="jugadors()">
             <option value="1">1</option>
             <option value="2">2</option>
@@ -53,7 +54,24 @@
             <option value="4">4</option>
             <option value="5">5</option>
         </select>
-    
+        <br><br><hr>
+        <center>
+        <button onclick="mou()">Mou</button><br>
+        <p id="rand"></p>
+        <hr>
+        </center>
+        <center>
+        <div>
+            <input type="radio" id="b1" onclick="fosc()" autocomplete="off"></input>
+            <label for="b1">Black</label>
+            <input type="radio" id="b2" onclick="clar()" autocomplete="off"></input>
+            <label for="b2">White</label>
+        </div>
+        </center>
+        <center>
+            <hr>
+            <button onclick="reset()">Reset</button>
+        </center>
     
 </body>
 </html>
