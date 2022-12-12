@@ -12,18 +12,24 @@
         list-style: none;
     }
     li {
-        display: block;
-        height: 1rem;
+        display: flex;
+        height: 20px;
         border: 1px solid;
     }
     li div {
         display: inline-block;
     }
-   .fitxa {
-        border-radius: 100%; 
-        border: 1px solid #BCEFFF; 
-        color:black; 
-        background: #BCEFFF;
+    .fitxa {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%; 
+        border: 1px solid white; 
+        color:black;
+        font-weight: bold; 
+        text-shadow: 0 0 1px white;
     }
 </style>
 <body id="body">
@@ -67,15 +73,23 @@
         </center>
         <center>
         <div>
-            <input type="radio" id="b1" onclick="fosc()" autocomplete="off"></input>
+            <!-- Amb o sense autocomplete="off" ni amb nope ni new-password ni awesomplete no es deschekengen 
+            i les funcions de js que he trobat tampoc funcionen-->
+            <input type="radio" id="b1" onclick="fosc()" autocomplete="awesomplete"></input>
             <label for="b1">Black</label>
-            <input type="radio" id="b2" onclick="clar()" autocomplete="off"></input>
+            <input type="radio" id="b2" onclick="clar()" autocomplete="awesomplete"></input>
             <label for="b2">White</label>
         </div>
         </center>
         <center>
             <hr>
             <button onclick="reset()">Reset</button>
+        </center><hr>
+        <center>
+            <button id="guardat">Save</button>
+            <button onclick="show()">Show saved</button>
+            <br><br>
+            <button onclick="borrses()">Borrar <br> Sesion Storage</button>
         </center>
     
 </body>

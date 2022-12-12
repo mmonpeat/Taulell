@@ -8,18 +8,14 @@ let max = 6;
 var turno_fixa_mover = 1;//el jugador que juga
 var value;//num jugadors que esculls
 
-//LLISTA
-//- colors fitxa random
-//- agafi numrand i es mogi numrand
-//- num rand 1-6
-
 function jugadors(){ 
 	if(start == false){//controla que ha començat el joc i no puc possar mes jugadors
 		value = numjug.value;
 		for(let i = 1; i <= value; i++){
+            var colorrand = ft_randomHSl2();
 			document.getElementById('item-20').innerHTML += `
-			<div id="jug`+ i +`">
-				<label class="fitxa">${i}</label>
+			<div id="jug-`+ i +`" class="fitxa" style="background-color:${colorrand}">
+                ${i}
 			</div>`;
 			//creas fitxes en item 20
 			//Pq la id de cada jugador sigui diferent
@@ -40,7 +36,7 @@ function mou(){
 			`<p> El numero random és ${numrand} </p>`;
 		
 		//fitxa es el num de la fitxa que toca moure
-		const fitxa = document.getElementById("jug" + turno_fixa_mover);
+		const fitxa = document.getElementById("jug-" + turno_fixa_mover);
 		let parentID = fitxa.parentElement.id;//agafes item-20
 		let str = parentID.split('-');
 		let id = parseInt(str[1]);//num casella on es troba la fitxa del jugador al qui li correspon el torn actual
@@ -54,12 +50,12 @@ function mou(){
 		if (dest_id <= 0)
 			dest_id = 2 + (-dest_id);
 		let next = document.getElementById(`item-${dest_id}`);
-		next.append(fitxa);//per moure la fitxa entre caselles
+		next.append(fitxa);//per moure la fitxa entre caselles. append afegeix darrere de next, fitxa 
 
 		//settime out pq es pugui veure el num de caselles que has abancat abans de que surti l'alert de que hi ha un guanyador
 		if (dest_id == 1)
 		{
-			setTimeout(() => alert(`El ganador és el jugador ${turno_fixa_mover}`), 100);
+			setTimeout(() => alert(`El guanyador és el jugador ${turno_fixa_mover} !!!!\nFelicitats :)`), 100);
 			winner = true;
 		}
 		else
@@ -72,12 +68,18 @@ function mou(){
 		}
 	}
 }
-//reset pag
+//reset pag i borra sesionstorage
 function reset(){
 	window.location.reload();
+    window.sessionStorage.clear();
+}
+//nomes borra sesion storage
+function borrses(){
+    window.sessionStorage.clear();
 }
 
-//canviar backgraund
+//canviar backgraund a blanc o negre amb bottons de tipo ratio
+//guardo directament per el color de fons al sesion storage per aqui
 function changeThemeColor(bg, text){
 	const body = document.getElementById('body');
 	body.style.backgroundColor = bg;
@@ -97,3 +99,54 @@ function fosc(){
     window.sessionStorage.setItem('color', 'black');
     let color = window.sessionStorage.getItem('color');
 }
+
+//Aquesta funcio posa colors de forma aleatoria a les fitxes dels jugadors 
+function ft_randomHSl2(){
+    var numr1 = Math.floor(Math.random() * 360);
+    var x = `hsl(${numr1}, 100%, 50%)`;
+    return x;
+}
+
+//guardar a localStorage
+//He utilitzat un addEventListener per cambiar una mica del onclick.
+var array = [];//creem un array buida per afegir l'objecte amb el que volem guardar de les fitxes
+var sav = document.getElementById("guardat");
+sav.addEventListener('click', function save(){
+    //tot el que hi ha en l'etiqueta de classe fitxa es guarda en tot 
+    var tot = document.querySelectorAll(".fitxa");
+	tot.forEach(element => {
+        //fem un parent element per poder posar en l'obj la posicio de la casella del jugador
+        var pare = element.parentElement;
+		var temp = {
+            id: element.id,
+            pos: pare.id,
+            color: element.style.backgroundColor
+        } 
+        array.push(temp);//afegeixo l'obj temp al final del array i com està buit, es veurà(amb un console log d'array) les keys i values de totes les fitxes
+    });
+    //console.dir(array);
+    sessionStorage.setItem("fitxes", JSON.stringify(array));//JSON.stringify converteix l'array d'obj a str
+});
+
+//posar tot el guardat de nou a la pagina
+function show(){
+    //selecionem totes les casselles i amb innerhtml les deixem buides
+    var nat = document.querySelectorAll("li");
+	nat.forEach(element => {
+        element.innerHTML= "";
+        //console.dir(element);
+    });
+	//agafem l'array guardat en sesionstorage que l'he anomenat fitxes
+    var info = window.sessionStorage.getItem("fitxes");
+    var infofitxes = JSON.parse(info);//JSON.parse converteix str a arrays
+    infofitxes.forEach(fitxa => {
+        var posicio = document.getElementById(fitxa.pos);
+		let str = fitxa.id.split('-');//separem jug-x amb - i agafem la x
+		let num = parseInt(str[1]); //convertim array en string
+        posicio.innerHTML += `
+			<div id="`+ fitxa.id +`" class="fitxa" style="background-color:${fitxa.color}">
+                ${num}
+			</div>`;
+    });
+}
+
