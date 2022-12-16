@@ -33,7 +33,8 @@ function mou(){
 		//per cada click a mou, surt un num random
 		var numrand = Math.floor(Math.random() * (max - min + 1) + min);
 		document.getElementById("rand").innerHTML = 
-			`<p> El numero random és ${numrand} </p>`;
+			`<p>Ha tirat el jugador ${turno_fixa_mover}<br>
+					El numero random és ${numrand} </p>`;
 		
 		//fitxa es el num de la fitxa que toca moure
 		const fitxa = document.getElementById("jug-" + turno_fixa_mover);
@@ -75,7 +76,8 @@ function reset(){
 }
 //nomes borra sesion storage
 function borrses(){
-    window.sessionStorage.clear();
+	window.sessionStorage.clear();
+	window.sessionStorage.removeItem("fitxes");
 }
 
 //canviar backgraund a blanc o negre amb bottons de tipo ratio
@@ -112,6 +114,7 @@ function ft_randomHSl2(){
 var array = [];//creem un array buida per afegir l'objecte amb el que volem guardar de les fitxes
 var sav = document.getElementById("guardat");
 sav.addEventListener('click', function save(){
+	array.length = 0;//nateja l'array per si ho tornes a guardar no es dupliquin les fitxes
     //tot el que hi ha en l'etiqueta de classe fitxa es guarda en tot 
     var tot = document.querySelectorAll(".fitxa");
 	tot.forEach(element => {
